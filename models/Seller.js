@@ -1,31 +1,34 @@
 const mongoose = require('mongoose');
 
-const addressSchema = new mongoose.Schema({
-	addressLine1: {
-		type: String,
-		required: [true, 'Address line 1 is required.'],
-		minLength: [5, 'Address line 1 must be at least 5 characters long.'],
-		maxLength: [255, 'Address line 1 must not exceed 255 characters.'],
-		trim: true,
+const addressSchema = new mongoose.Schema(
+	{
+		addressLine1: {
+			type: String,
+			required: [true, 'Address line 1 is required.'],
+			minLength: [1, 'Address line 1 must be at least 1 characters long.'],
+			maxLength: [255, 'Address line 1 must not exceed 255 characters.'],
+			trim: true,
+		},
+		addressLine2: {
+			type: String,
+			required: [true, 'Address line 2 is required.'],
+			minLength: [5, 'Address line 2 must be at least 5 characters long.'],
+			maxLength: [255, 'Address line 2 must not exceed 255 characters.'],
+			trim: true,
+		},
+		addressLine3: {
+			type: String,
+			minLength: [5, 'Address line 1 must be at least 5 characters long.'],
+			maxLength: [255, 'Address line 1 must not exceed 255 characters.'],
+			trim: true,
+		},
 	},
-	addressLine2: {
-		type: String,
-		required: [true, 'Address line 2 is required.'],
-		minLength: [5, 'Address line 2 must be at least 5 characters long.'],
-		maxLength: [255, 'Address line 2 must not exceed 255 characters.'],
-		trim: true,
-	},
-	addressLine3: {
-		type: String,
-		minLength: [5, 'Address line 1 must be at least 5 characters long.'],
-		maxLength: [255, 'Address line 1 must not exceed 255 characters.'],
-		trim: true,
-	},
-});
+	{ _id: 0 }
+);
 
 const sellerSchema = new mongoose.Schema(
 	{
-		id: String,
+		id: { type: String, unique: true },
 		name: {
 			type: String,
 			required: [true, 'Name is required.'],
@@ -52,9 +55,9 @@ const sellerSchema = new mongoose.Schema(
 			required: [true, 'Phone number is required'],
 			validate: {
 				validator: function (v) {
-					return /^0[1-9]{1}[0-9]{8}$/.test();
+					return /^0[1-9]{1}[0-9]{8}$/.test(v);
 				},
-				message: (props) => `${props.value} is not a valid phone number!`,
+				message: (props) => `${props.value} is not a valid phone number`,
 			},
 		},
 		shopURL: {
@@ -67,11 +70,10 @@ const sellerSchema = new mongoose.Schema(
 			required: [true, 'E-mail is required'],
 			maxLength: [255, 'E-mail must not exceed 255 characters'],
 			validate: {
-				validator: function (v) {
-					return /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(
+				validator: (v) =>
+					/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(
 						v
-					);
-				},
+					),
 				message: 'Invalid e-mail',
 			},
 		},

@@ -1,0 +1,29 @@
+###
+GET http://localhost:3000/products
+
+###
+GET http://localhost:3000/products/68550761-bebb-4ae4-b993-f49605744ce8
+
+###
+DELETE http://localhost:3000/products/
+###
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+"name":"IPhone 11",
+"description":"iphone",
+"address":{"addressLine1":"12","addressLine2":"Street"},
+"phone":"0111211111",
+"condition":"New",
+"images":["img1","img2"]
+}
+
+### 
+PUT http://localhost:3000/products/68550761-bebb-4ae4-b993-f49605744ce8
+Content-Type: application/json
+
+{
+"name":"Iphone5"
+}
+

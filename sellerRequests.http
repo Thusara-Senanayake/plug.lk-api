@@ -1,0 +1,28 @@
+###
+GET http://localhost:3000/sellers
+
+###
+GET http://localhost:3000/sellers/9a4ed41d-1262-4efa-8488-524088b1e296
+
+###
+DELETE http://localhost:3000/sellers/816a9860-b161-4740-86ff-ae91909130d1
+###
+POST http://localhost:3000/sellers
+Content-Type: application/json
+
+{
+"name":"Nimal",
+"address":{"addressLine1":"12","addressLine2":"Street"},
+"profileImage":"url",
+"phone":"0111211111",
+"email":"sdsds@gmail.com"
+}
+
+### 
+PUT http://localhost:3000/sellers/3d025d3b-17f5-414b-99db-90ff0b9c5336
+Content-Type: application/json
+
+{
+"name":"Namal"
+}
+
