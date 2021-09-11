@@ -1,7 +1,7 @@
 {
   "name": "plug.lk-api",
   "version": "1.0.0",
-  "description": "An RESTful API for e-commerce site",
+  "description": "A RESTful API for e-commerce site",
   "main": "index.js",
   "scripts": {
     "start": "node index",
