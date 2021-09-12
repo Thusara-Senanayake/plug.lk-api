@@ -1,11 +1,24 @@
 const Product = require('../models/Product');
 const { handleErrors } = require('../helpers/errorHandler');
-var ObjectId = require('mongoose').Types.ObjectId;
-const hostURL = 'http://localhost';
-const hostPort = process.env.PORT || 3000;
 
 const product_index_all = (req, res) => {
-	Product.find({}, { createdAt: 0, updatedAt: 0, __v: 0 })
+	const parameters = {};
+	// searching functionality
+
+	if (req.query.q) {
+		const searchTerm = req.query.q;
+
+		const searchTermRegex = new RegExp(
+			searchTerm.trim().replace(' ', '|'),
+			'i'
+		);
+		parameters.$or = [
+			{ name: { $regex: searchTermRegex } },
+			{ model: { $regex: searchTermRegex } },
+			{ edition: { $regex: searchTermRegex } },
+		];
+	}
+	Product.find(parameters, { createdAt: 0, updatedAt: 0, __v: 0 })
 		.populate('sellerInfo', '-address -phone -email -createdAt -updatedAt -__v')
 		.then((result) => {
 			res.json(result);
@@ -33,33 +46,7 @@ const product_index_one = (req, res) => {
 		});
 };
 const product_create = (req, res) => {
-	function getNewProduct(req) {
-		const {
-			name,
-			description,
-			images,
-			address,
-			phone,
-			brand,
-			model,
-			edition,
-			condition,
-			sellerInfo,
-		} = req.body;
-		return {
-			name,
-			description,
-			images,
-			address,
-			phone,
-			brand,
-			model,
-			edition,
-			condition,
-			sellerInfo,
-		};
-	}
-	const product = new Product(getNewProduct(req));
+	const product = new Product(req.body);
 	product
 		.save()
 		.then((result) => {
@@ -68,7 +55,7 @@ const product_create = (req, res) => {
 				data: {
 					id: result.id,
 					name: result.name,
-					url: `${hostURL}:${hostPort}/products/${result.id}`,
+					url: `${process.env.HOST_NAME}:${process.env.PORT}/products/${result.id}`,
 				},
 			});
 		})
@@ -108,7 +95,7 @@ const product_edit = (req, res) => {
 				data: {
 					id: result.id,
 					name: result.name,
-					url: `${hostURL}:${hostPort}/products/${result.id}`,
+					url: `${process.env.HOST_NAME}:${process.env.PORT}/products/${result.id}`,
 				},
 			});
 		})

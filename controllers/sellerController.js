@@ -1,11 +1,7 @@
 const Seller = require('../models/Seller');
-const { v4: uuidv4 } = require('uuid');
 const { handleErrors } = require('../helpers/errorHandler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-const hostURL = 'http://localhost';
-const hostPort = process.env.PORT || 3000;
 
 // 1 day
 const maxAge = 1 * 24 * 60 * 60;
@@ -45,27 +41,7 @@ const seller_index_one = (req, res) => {
 		});
 };
 const seller_create = (req, res) => {
-	function getNewSeller(req) {
-		const {
-			name,
-			password,
-			itemsSelling,
-			profileImage,
-			address,
-			phone,
-			email,
-		} = req.body;
-		return {
-			name,
-			profileImage,
-			address,
-			phone,
-			email,
-			itemsSelling,
-			password,
-		};
-	}
-	const seller = new Seller(getNewSeller(req));
+	const seller = new Seller(req.body);
 	seller
 		.save()
 		.then((result) => {
@@ -74,7 +50,7 @@ const seller_create = (req, res) => {
 				data: {
 					id: result._id,
 					name: result.name,
-					url: `${hostURL}:${hostPort}/sellers/${result.id}`,
+					url: `${process.env.HOST_NAME}:${process.env.PORT}/sellers/${result.id}`,
 				},
 			});
 		})
@@ -111,7 +87,7 @@ const seller_edit = (req, res) => {
 				data: {
 					id: result.id,
 					name: result.name,
-					url: `${hostURL}:${hostPort}/sellers/${result.id}`,
+					url: `${process.env.HOST_NAME}:${process.env.PORT}/sellers/${result.id}`,
 				},
 			});
 		})
