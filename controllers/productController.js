@@ -1,12 +1,12 @@
 const Product = require('../models/Product');
-const { v4: uuidv4 } = require('uuid');
 const { handleErrors } = require('../helpers/errorHandler');
-
+var ObjectId = require('mongoose').Types.ObjectId;
 const hostURL = 'http://localhost';
 const hostPort = process.env.PORT || 3000;
 
 const product_index_all = (req, res) => {
-	Product.find({}, { _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
+	Product.find({}, { createdAt: 0, updatedAt: 0, __v: 0 })
+		.populate('sellerInfo', '-address -phone -email -createdAt -updatedAt -__v')
 		.then((result) => {
 			res.json(result);
 		})
@@ -20,17 +20,16 @@ const product_index_all = (req, res) => {
 
 const product_index_one = (req, res) => {
 	const id = req.params.id;
-	Product.findOne({ id }, { _id: 0, createdAt: 0, updatedAt: 0, __v: 0 })
+	Product.findById(id, { createdAt: 0, updatedAt: 0, __v: 0 })
+		.populate('sellerInfo', '-address -phone -email -createdAt -updatedAt -__v')
 		.then((result) => {
 			if (!result) {
 				return res.json({ status: 'fail', message: 'resource not found' });
 			}
+			res.json(result);
 		})
-		.catch((err) => {
-			res.json({
-				status: 'fail',
-				data: [{ message: 'database error occured' }, { info: err }],
-			});
+		.catch(() => {
+			res.json({ status: 'fail', message: 'resource not found' });
 		});
 };
 const product_create = (req, res) => {
@@ -45,9 +44,9 @@ const product_create = (req, res) => {
 			model,
 			edition,
 			condition,
+			sellerInfo,
 		} = req.body;
 		return {
-			id: 'uuidv4()',
 			name,
 			description,
 			images,
@@ -57,6 +56,7 @@ const product_create = (req, res) => {
 			model,
 			edition,
 			condition,
+			sellerInfo,
 		};
 	}
 	const product = new Product(getNewProduct(req));
@@ -79,7 +79,7 @@ const product_create = (req, res) => {
 };
 const product_delete = (req, res) => {
 	const id = req.params.id;
-	Product.findOneAndRemove({ id })
+	Product.findByIdAndDelete(id)
 		.then((result) => {
 			res.json({
 				status: 'success',
@@ -95,7 +95,7 @@ const product_delete = (req, res) => {
 };
 const product_edit = (req, res) => {
 	const id = req.params.id;
-	Product.findOneAndUpdate({ id }, req.body, {
+	Product.findByIdAndUpdate(id, req.body, {
 		new: true,
 		runValidators: true,
 	})

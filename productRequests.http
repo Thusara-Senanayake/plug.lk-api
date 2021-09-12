@@ -2,13 +2,16 @@
 GET http://localhost:3000/products
 
 ###
-GET http://localhost:3000/products/68550761-bebb-4ae4-b993-f49605744ce8
+GET http://localhost:3000/products/613cd4c8954d3330415183c8
 
 ###
-DELETE http://localhost:3000/products/
+DELETE http://localhost:3000/products/613ceb0235f88d6f01c35cb4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxM2Q5OWRmZjY4M2M1MGUwZTkzNDljYyIsImlhdCI6MTYzMTQzMDU2MywiZXhwIjoxNjMxODYyNTYzfQ.kf-CuC27owy13fsj53ixf07JGQBmtbG5fljT_a8_bkE
 ###
 POST http://localhost:3000/products
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxM2Q5OWRmZjY4M2M1MGUwZTkzNDljYyIsImlhdCI6MTYzMTQzMDU2MywiZXhwIjoxNjMxODYyNTYzfQ.kf-CuC27owy13fsj53ixf07JGQBmtbG5fljT_a8_bkE
+
 
 {
 "name":"IPhone 11",
@@ -16,12 +19,15 @@ Content-Type: application/json
 "address":{"addressLine1":"12","addressLine2":"Street"},
 "phone":"0111211111",
 "condition":"New",
-"images":["img1","img2"]
+"images":["img1","img2"],
+"sellerInfo":"613cda7656c960db8024f5f9"
 }
 
 ### 
-PUT http://localhost:3000/products/68550761-bebb-4ae4-b993-f49605744ce8
+PUT http://localhost:3000/products/613cd4c8954d3330415183c8
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxM2Q5OWRmZjY4M2M1MGUwZTkzNDljYyIsImlhdCI6MTYzMTQzMDU2MywiZXhwIjoxNjMxODYyNTYzfQ.kf-CuC27owy13fsj53ixf07JGQBmtbG5fljT_a8_bkE
+
 
 {
 "name":"Iphone5"

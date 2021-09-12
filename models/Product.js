@@ -28,7 +28,6 @@ const addressSchema = new mongoose.Schema(
 
 const productSchema = new mongoose.Schema(
 	{
-		id: { type: String, unique: true },
 		name: {
 			type: String,
 			required: [true, 'Name is required.'],
@@ -96,10 +95,11 @@ const productSchema = new mongoose.Schema(
 			trim: true,
 			maxLength: [50, 'Description must not exceed 50 characters'],
 		},
-		// sellerInfo: {
-		// 	type: mongoose.Schema.Types.ObjectId,
-		// 	ref: Seller,
-		// },
+		sellerInfo: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: [true, 'seller information is required'],
+			ref: 'Seller',
+		},
 	},
 	{ timestamps: true }
 );

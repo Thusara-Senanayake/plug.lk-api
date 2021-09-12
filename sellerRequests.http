@@ -2,10 +2,10 @@
 GET http://localhost:3000/sellers
 
 ###
-GET http://localhost:3000/sellers/9a4ed41d-1262-4efa-8488-524088b1e296
+GET http://localhost:3000/sellers/613d4a53dd5afa5e3726e9df
 
 ###
-DELETE http://localhost:3000/sellers/816a9860-b161-4740-86ff-ae91909130d1
+DELETE http://localhost:3000/sellers/613cda7656c960db8024f5f9
 ###
 POST http://localhost:3000/sellers
 Content-Type: application/json
@@ -15,14 +15,26 @@ Content-Type: application/json
 "address":{"addressLine1":"12","addressLine2":"Street"},
 "profileImage":"url",
 "phone":"0111211111",
-"email":"sdsds@gmail.com"
+"email":"sdsds@gmail.com",
+"itemsSelling":["613cef6968d3811759ef5017","613ceb0235f88d6f01c35cb4"],
+"password":"123123"
 }
 
-### 
-PUT http://localhost:3000/sellers/3d025d3b-17f5-414b-99db-90ff0b9c5336
+###
+POST http://localhost:3000/sellers/login
 Content-Type: application/json
 
 {
-"name":"Namal"
+"name":"Nimal",
+"email":"sdsds@gmail.com",
+"password":"123123"
+}
+
+### 
+PUT http://localhost:3000/sellers/613ced16ec8b4d5cc14f557d
+Content-Type: application/json
+
+{
+"_id":"613cda7656c960db8024f5f9"
 }
 

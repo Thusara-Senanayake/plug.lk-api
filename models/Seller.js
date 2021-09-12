@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const addressSchema = new mongoose.Schema(
 	{
@@ -28,7 +29,6 @@ const addressSchema = new mongoose.Schema(
 
 const sellerSchema = new mongoose.Schema(
 	{
-		id: { type: String, unique: true },
 		name: {
 			type: String,
 			required: [true, 'Name is required.'],
@@ -36,7 +36,6 @@ const sellerSchema = new mongoose.Schema(
 			maxLength: [255, 'Name must not exceed 255 characters.'],
 			trim: true,
 		},
-
 		profileImage: {
 			type: String,
 			trim: true,
@@ -67,6 +66,7 @@ const sellerSchema = new mongoose.Schema(
 		},
 		email: {
 			type: String,
+			unique: true,
 			required: [true, 'E-mail is required'],
 			maxLength: [255, 'E-mail must not exceed 255 characters'],
 			validate: {
@@ -82,9 +82,28 @@ const sellerSchema = new mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+		itemsSelling: {
+			type: [mongoose.Schema.Types.ObjectId],
+			ref: 'Product',
+		},
+		password: {
+			type: String,
+			required: [true, 'Password is required'],
+			select: false,
+			maxLength: [1024, 'Password must not exceed 1024 characters'],
+			minLength: [6, 'Use at least 6 characters'],
+		},
 	},
 	{ timestamps: true }
 );
+sellerSchema.pre('save', async function (next) {
+	const salt = await bcrypt.genSalt();
+	this.password = await bcrypt.hash(this.password, salt);
+	next();
+});
+// sellerSchema.statics.login = async function(email,password){
+// 	Seller.findOne
+// }
 
 const Seller = mongoose.model('Seller', sellerSchema);
 module.exports = Seller;
