@@ -19,7 +19,10 @@ const product_index_all = (req, res) => {
 		];
 	}
 	Product.find(parameters, { createdAt: 0, updatedAt: 0, __v: 0 })
-		.populate('sellerInfo', '-address -phone -email -createdAt -updatedAt -__v')
+		.populate(
+			'sellerInfo',
+			'-address -phone -email -createdAt -updatedAt -__v -itemsSelling'
+		)
 		.then((result) => {
 			res.json(result);
 		})
@@ -34,7 +37,10 @@ const product_index_all = (req, res) => {
 const product_index_one = (req, res) => {
 	const id = req.params.id;
 	Product.findById(id, { createdAt: 0, updatedAt: 0, __v: 0 })
-		.populate('sellerInfo', '-address -phone -email -createdAt -updatedAt -__v')
+		.populate(
+			'sellerInfo',
+			'-address -phone -email -createdAt -updatedAt -__v -itemsSelling'
+		)
 		.then((result) => {
 			if (!result) {
 				return res.json({ status: 'fail', message: 'resource not found' });

@@ -101,9 +101,6 @@ sellerSchema.pre('save', async function (next) {
 	this.password = await bcrypt.hash(this.password, salt);
 	next();
 });
-// sellerSchema.statics.login = async function(email,password){
-// 	Seller.findOne
-// }
 
 const Seller = mongoose.model('Seller', sellerSchema);
 module.exports = Seller;

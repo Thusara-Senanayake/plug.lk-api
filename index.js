@@ -7,6 +7,7 @@ const sellerRoutes = require('./routes/sellerRoutes');
 const app = express();
 
 // ---------- config ----------
+app.set('json spaces', 2);
 const port = process.env.PORT || 3000;
 dotenv.config();
 
@@ -39,7 +40,21 @@ app.use((req, res, next) => {
 	next(error);
 });
 // ---------- redirects ----------
-// app.get('/', (req, res) => {});
+app.get('/', (req, res) => {
+	res.json({
+		status: 'success',
+		data: [
+			{
+				endpoint: 'prouducts',
+				url: `${process.env.HOSTNAME}:${process.env.PORT}/products`,
+			},
+			{
+				endpoint: 'sellers',
+				url: `${process.env.HOSTNAME}:${process.env.PORT}/sellers`,
+			},
+		],
+	});
+});
 
 // ---------- bottom m/ws ----------
 // ---------- error handling ----------
