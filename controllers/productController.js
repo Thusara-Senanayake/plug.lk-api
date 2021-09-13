@@ -61,7 +61,7 @@ const product_create = (req, res) => {
 				data: {
 					id: result.id,
 					name: result.name,
-					url: `${process.env.HOST_NAME}:${process.env.PORT}/products/${result.id}`,
+					url: `${process.env.HOST_NAME}/products/${result.id}`,
 				},
 			});
 		})
@@ -99,9 +99,9 @@ const product_edit = (req, res) => {
 			res.json({
 				status: 'success',
 				data: {
-					id: result.id,
+					id: result._id,
 					name: result.name,
-					url: `${process.env.HOST_NAME}:${process.env.PORT}/products/${result.id}`,
+					url: `${process.env.HOST_NAME}/products/${result._id}`,
 				},
 			});
 		})

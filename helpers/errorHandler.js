@@ -12,6 +12,10 @@ const handleErrors = (err) => {
 		});
 		return error;
 	}
+	if (err.name === 'CastError') {
+		error.data.push({ [err.path]: err.message });
+		return error;
+	}
 
 	// checking for duplicate values
 	if (err.code === 11000) {
@@ -20,14 +24,12 @@ const handleErrors = (err) => {
 		error.data.push({ [errorField]: `${errorValue} is already being used` });
 		return error;
 	}
-	if (err.name === 'CastError') {
-		error.data.push({ [err.path]: err.message });
-		return error;
-	}
+	// checking for id modification
 	if (err.code === 66) {
 		error.data.push({ id: 'id is immutable' });
 		return error;
 	}
+
 	error.data.push(err);
 	return error;
 };

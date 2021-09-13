@@ -3,17 +3,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const productRoutes = require('./routes/productRoutes');
 const sellerRoutes = require('./routes/sellerRoutes');
+const indexRoutes = require('./routes/indexRoutes');
 
 const app = express();
 
 // ---------- config ----------
 app.set('json spaces', 2);
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 dotenv.config();
 
 // ---------- database ----------
 mongoose
-	// eslint-disable-next-line no-undef
 	.connect(process.env.MONGODB_URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
@@ -33,37 +33,25 @@ app.use('/public', express.static('./public'));
 app.use(express.json());
 
 // ---------- routes ----------
+app.use('/', indexRoutes);
 app.use('/products', productRoutes);
 app.use('/sellers', sellerRoutes);
+
+// ---------- redirects ----------
+// ---------- bottom m/ws ----------
+
+// ---------- error handling ----------
+
 app.use((req, res, next) => {
 	const error = new Error(404);
 	next(error);
 });
-// ---------- redirects ----------
-app.get('/', (req, res) => {
-	res.json({
-		status: 'success',
-		data: [
-			{
-				endpoint: 'prouducts',
-				url: `${process.env.HOSTNAME}:${process.env.PORT}/products`,
-			},
-			{
-				endpoint: 'sellers',
-				url: `${process.env.HOSTNAME}:${process.env.PORT}/sellers`,
-			},
-		],
-	});
-});
-
-// ---------- bottom m/ws ----------
-// ---------- error handling ----------
 
 app.use((err, req, res, next) => {
 	if (err.message === '404') {
 		return res.status(404).json({
 			status: 'fail',
-			data: 'data not found',
+			message: 'resource not found',
 		});
 	}
 

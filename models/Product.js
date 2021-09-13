@@ -55,7 +55,7 @@ const productSchema = new mongoose.Schema(
 		},
 		address: {
 			type: addressSchema,
-			required: true,
+			required: [true, 'Address is required'],
 		},
 		phone: {
 			type: String,
@@ -105,43 +105,3 @@ const productSchema = new mongoose.Schema(
 );
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;
-// User
-//    .findOne({_id: userId })
-//    .populate("blogs",{ name: 1 }) // key to populate
-
-/* 
-
- Update validators are off by default - you need to specify the runValidators option.
-
-
-
- toySchema.path('color').validate(function(value) {
-  // When running update validators, `this` refers to the query object.
-  if (this.getUpdate().$set.name.toLowerCase().indexOf('red') !== -1) {
-    return value === 'red';
-  }
-  return true;
-});
-
-const Toy = db.model('Figure', toySchema);
-
-const update = { color: 'blue', name: 'Red Power Ranger' };
-// Note the context option
-const opts = { runValidators: true, context: 'query' };
-
-Toy.updateOne({}, update, opts, function(error) {
-  assert.ok(error.errors['color']);
-});
-
-Update Validators Only Run For Some Operations
-$set
-$unset
-$push (>= 4.8.0)
-$addToSet (>= 4.8.0)
-$pull (>= 4.12.0)
-$pullAll (>= 4.12.0)
-
-Also, $push, $addToSet, $pull, and $pullAll validation does not run any validation on the array itself, only individual elements of the array. 
-
-
-*/

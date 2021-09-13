@@ -47,7 +47,7 @@ const sellerSchema = new mongoose.Schema(
 		},
 		address: {
 			type: addressSchema,
-			required: true,
+			required: [true, 'Address is required'],
 		},
 		phone: {
 			type: String,

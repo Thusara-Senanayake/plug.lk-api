@@ -3,10 +3,12 @@ const { handleErrors } = require('../helpers/errorHandler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// 1 day
+// equals to 1 day
 const maxAge = 1 * 24 * 60 * 60;
 const createToken = (id) => {
-	return jwt.sign({ id }, process.env.AUTH_SECRET, { expiresIn: maxAge });
+	return jwt.sign({ id }, process.env.SELLER_AUTH_SECRET, {
+		expiresIn: maxAge,
+	});
 };
 
 const seller_index_all = (req, res) => {
@@ -50,7 +52,8 @@ const seller_create = (req, res) => {
 				data: {
 					id: result._id,
 					name: result.name,
-					url: `${process.env.HOST_NAME}:${process.env.PORT}/sellers/${result.id}`,
+					token: `Bearer ${createToken(result._id)}`,
+					url: `${process.env.HOST_NAME}/sellers/${result.id}`,
 				},
 			});
 		})
@@ -85,9 +88,9 @@ const seller_edit = (req, res) => {
 			res.json({
 				status: 'success',
 				data: {
-					id: result.id,
+					id: result._id,
 					name: result.name,
-					url: `${process.env.HOST_NAME}:${process.env.PORT}/sellers/${result.id}`,
+					url: `${process.env.HOST_NAME}/sellers/${result.id}`,
 				},
 			});
 		})
@@ -104,7 +107,10 @@ const seller_login = (req, res) => {
 				const auth = bcrypt.compareSync(password, result.password);
 				if (auth) {
 					const token = createToken(result._id);
-					return res.json({ Authorization: `Bearer ${token} ` });
+					return res.json({
+						status: 'success',
+						authorization: `Bearer ${token} `,
+					});
 				}
 				return res.json({ status: 'fail', message: 'invalid password' });
 			}
